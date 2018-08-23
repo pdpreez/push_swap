@@ -21,7 +21,7 @@ LIB_PATH = ./libft/
 SRC_FILE =	errors.c errors2.c buildstacks.c \
 			printstacks.c prinstuct.c prinstuct2.c \
 			instructions.c instructions2.c instructions3.c \
-			sortutils.c sortutils2.c
+			sortutils.c sortutils2.c free_all.c
 
 OBJ_FILE = $(SRC_FILE:%.c=%.o)
 

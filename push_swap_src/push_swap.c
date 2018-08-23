@@ -6,48 +6,56 @@
 /*   By: ppreez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/27 10:26:13 by ppreez            #+#    #+#             */
-/*   Updated: 2018/08/08 09:25:23 by ppreez           ###   ########.fr       */
+/*   Updated: 2018/08/23 09:25:09 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/push_swap.h"
 
+void	rot_min(t_master *m_stack)
+{
+	int lowest;
+	int	dist;
+	int	size;
+
+	size = list_size(STACK_A);
+	lowest = find_lowest(STACK_A);
+	dist = dist_cont(STACK_A, lowest);
+	while (STACK_A && STACK_A->next && STACK_A_CONTENT != lowest)
+	{
+		if (dist < (size / 2))
+			rotate_a(m_stack);
+		else
+			rev_rot_a(m_stack);
+	}
+}
+
 void	simple_sort(t_master *m_stack)
 {
-	t_list	*tail_a;
+	t_list	*tail;
 
-	while (!is_sorted(m_stack) && STACK_A->next)
+	while (STACK_A->next && !is_stack_sorted(STACK_A))
 	{
-		tail_a = find_tail(STACK_A);
+		tail = find_tail(STACK_A);
 		if (sorted_any_order(STACK_A))
-			rotate_a(m_stack);
-		else if (!STACK_A_SORTED)
+			rot_min(m_stack);
+		if (!STACK_A_SORTED)
 			swap_a(m_stack);
-		else if (STACK_A_CONTENT > *(int *)tail_a->content)
-		{
-			if (STACK_B && STACK_B->next && STACK_B_SORTED)
-				rrr(m_stack);
-			else
-				rev_rot_a(m_stack);
-		}
-		if (STACK_A_CONTENT < *(int *)tail_a->content)
-			push_b(m_stack);
-		if (STACK_B && STACK_B->next && STACK_B_SORTED)
-			rev_rot_b(m_stack);
+		if (STACK_A_CONTENT > *(int *)tail->content)
+			rot_min(m_stack);
 		if (is_stack_sorted(STACK_A))
-		{
-			while (STACK_B)
-				push_a(m_stack);
-		}
+			break ;
+		rot_min(m_stack);
+		push_b(m_stack);
 	}
+	while (STACK_B)
+		push_a(m_stack);
 }
 
 int		main(int argc, char **argv)
 {
 	t_master	m_stack;
-	int			x;
 
-	x = 0;
 	if (argc > 1)
 	{
 		if (((errorhandler(&m_stack, argc, argv)) && m_stack.size > 0))
@@ -61,5 +69,6 @@ int		main(int argc, char **argv)
 			return (1);
 		}
 	}
+	free_all(&m_stack);
 	return (0);
 }

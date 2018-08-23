@@ -6,7 +6,7 @@
 /*   By: ppreez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/13 15:41:26 by ppreez            #+#    #+#             */
-/*   Updated: 2018/08/16 15:05:04 by ppreez           ###   ########.fr       */
+/*   Updated: 2018/08/19 18:11:28 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ int		dist_cont(t_list *stack, int cont)
 int		sorted_any_order(t_list *stack)
 {
 	int		sort;
-	
 	t_list	*head;
 
 	sort = 0;
 	head = stack;
-	
 	while (stack->next)
 	{
 		if (*(int *)stack->content > *(int *)stack->next->content)
@@ -65,4 +63,25 @@ int		sorted_any_order(t_list *stack)
 	}
 	stack = head;
 	return (sort <= 1);
+}
+
+void	rot_max_b(t_master *m_stack)
+{
+	int lowest;
+	int	dist;
+	int	size;
+
+	if (STACK_B && STACK_B->next)
+	{
+		size = list_size(STACK_B);
+		lowest = find_highest(STACK_B);
+		dist = dist_cont(STACK_B, lowest);
+		while (STACK_B_CONTENT != lowest)
+		{
+			if (dist < (size / 2))
+				rotate_b(m_stack);
+			else
+				rev_rot_b(m_stack);
+		}
+	}
 }

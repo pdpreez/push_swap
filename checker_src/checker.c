@@ -6,7 +6,7 @@
 /*   By: ppreez <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/27 10:26:45 by ppreez            #+#    #+#             */
-/*   Updated: 2018/08/07 16:50:56 by ppreez           ###   ########.fr       */
+/*   Updated: 2018/08/23 09:12:20 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,30 +51,40 @@ int		valid_line(char *line)
 		return (0);
 }
 
+void	read_instructions(t_master *m_stack)
+{
+	char *line;
+
+	line = NULL;
+	while (get_next_line(0, &line))
+	{
+		if (!valid_line(line))
+		{
+			ft_putendl("Error");
+			return ;
+		}
+		checker(m_stack, line);
+	}
+	if (is_sorted(m_stack))
+		ft_putendl("OK");
+	else
+		ft_putendl("KO");
+}
+
 int		main(int argc, char **argv)
 {
 	t_master	m_stack;
-	char		*line;
 
-	line = NULL;
-	if ((errorhandler(&m_stack, argc, argv)) && m_stack.size > 0 && argc > 1)
+	if (argc > 1)
 	{
-		build_stacks(&m_stack);
-		while (get_next_line(0, &line))
+		if ((errorhandler(&m_stack, argc, argv)) && m_stack.size > 0)
 		{
-			if (!valid_line(line))
-			{
-				ft_putendl("Error");
-				return (0);
-			}
-			checker(&m_stack, line);
+			build_stacks(&m_stack);
+			read_instructions(&m_stack);
 		}
-		if (is_sorted(&m_stack))
-			ft_putendl("OK");
 		else
-			ft_putendl("KO");
+			ft_putendl("Error");
 	}
-	else
-		ft_putendl("Error");
+	free_all(&m_stack);
 	return (0);
 }
